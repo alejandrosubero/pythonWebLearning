@@ -1,0 +1,28 @@
+/* You can add global styles to this file, and also import other style files */
+/* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-bg-primary: #ffffff;
+    --color-bg-secondary: #f9fafb;
+    --color-text-primary: #111827;
+    --color-text-secondary: #6b7280;
+    --color-border: #e5e7eb;
+  }
+
+  [data-theme="dark"] {
+    --color-bg-primary: #111827;
+    --color-bg-secondary: #1f2937;
+    --color-text-primary: #f9fafb;
+    --color-text-primary: #d1d5db;
+    --color-border: #374151;
+  }
+}
+
+/* Scroll suave para navegación */
+html {
+  scroll-behavior: smooth;
+}
