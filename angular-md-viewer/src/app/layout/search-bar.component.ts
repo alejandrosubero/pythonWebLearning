@@ -1,33 +1,3 @@
-// import { Component, inject } from '@angular/core';
-// import { SearchService } from '../core/services/search.service';
-
-// @Component({
-//   selector: 'app-search-bar',
-//   standalone: true,
-//   template: `
-//     <div class="relative">
-//       <input
-//         type="text"
-//         placeholder="Buscar..."
-//         class="
-//           w-full rounded-lg border px-3 py-2
-//           text-sm
-//           focus:outline-none focus:ring-2 focus:ring-blue-500
-//         "
-//         (input)="onInput($event)"
-//       />
-//     </div>
-//   `
-// })
-// export class SearchBarComponent {
-//   private search = inject(SearchService);
-
-//   onInput(event: Event) {
-//     const value = (event.target as HTMLInputElement).value;
-//     this.search.setQuery(value);
-//   }
-// }
-
 import { Component, inject } from '@angular/core';
 import { SearchService } from '../core/services/search.service';
 

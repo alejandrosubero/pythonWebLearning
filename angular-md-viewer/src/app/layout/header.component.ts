@@ -1,19 +1,3 @@
-// import { Component } from '@angular/core';
-// import { SearchBarComponent } from './search-bar.component';
-
-// @Component({
-//   selector: 'app-header',
-//   standalone: true,
-//   imports: [SearchBarComponent],
-//   template: `
-//     <header class="sticky top-0 z-40 bg-white border-b p-3 md:hidden">
-//       <app-search-bar />
-//     </header>
-//   `
-// })
-// export class HeaderComponent {}
-
-
 import { Component } from '@angular/core';
 import { SearchBarComponent } from './search-bar.component';
 
