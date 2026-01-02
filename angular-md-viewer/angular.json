@@ -31,6 +31,7 @@
           },
           "configurations": {
             "production": {
+              "baseHref": "/python_Learning_web/",
               "budgets": [
                 {
                   "type": "initial",

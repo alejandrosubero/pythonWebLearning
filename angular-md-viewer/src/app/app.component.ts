@@ -43,3 +43,4 @@ export class AppComponent {
 //ng build --configuration production
 
 //python_Learning_web
+//ng build --configuration production --base-href="/tu-repositorio/"
