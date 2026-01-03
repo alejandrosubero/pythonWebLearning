@@ -35,8 +35,9 @@ import { NavbarComponent } from './layout/navbar.component';
   `
 })
 export class AppComponent {
-  constructor(md: MarkdownService) {
-    md.loadMarkdown('assets/datos.md');
+  constructor(private markdownService: MarkdownService) {
+    // markdownService.loadMarkdown('assets/datos.md');
+    markdownService.loadMarkdownList();
   }
 }
 
@@ -44,3 +45,5 @@ export class AppComponent {
 
 //python_Learning_web
 //ng build --configuration production --base-href="/tu-repositorio/"
+
+ 
