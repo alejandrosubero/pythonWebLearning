@@ -2,7 +2,7 @@ import { Component, inject, computed } from '@angular/core';
 import { MarkdownService } from '../core/services/markdown.service';
 import { SearchService } from '../core/services/search.service';
 import { UiService } from '../core/services/ui.service';
-import { SearchBarComponent } from '../layout/search-bar.component';
+import { SearchBarComponent } from '../features/search-bar.component';
 
 
 

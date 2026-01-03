@@ -1,14 +1,4 @@
-import { Component, inject, computed, AfterViewChecked } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { MarkdownService } from '../../../../src/app/core/services/markdown.service';
-import { SearchService } from '../../../../src/app/core/services/search.service';
-
-@Component({
-  selector: 'app-content-renderer',
-  standalone: true,
-  imports: [CommonModule],
-  template: `
-    <article class="prose prose-slate dark:prose-invert max-w-none p-6 
+  <article class="prose prose-slate dark:prose-invert max-w-none p-6 
                    bg-white dark:bg-gray-800 
                    text-gray-900 dark:text-gray-100 
                    min-h-screen">
@@ -49,30 +39,8 @@ import { SearchService } from '../../../../src/app/core/services/search.service'
           </p>
         }
 
-        @if (b.type === 'code') {
-          <pre class="overflow-x-auto bg-slate-900 dark:bg-slate-950 text-slate-100 p-4 rounded-lg text-sm">
-            <code>{{ b.content }}</code>
-          </pre>
-        }
+          @if (b.type === 'code') {
+            <pre class="overflow-x-auto bg-slate-900 dark:bg-slate-950 text-slate-100 p-4 rounded-lg text-sm"><code class="language-{{ b.language }}">{{ b.content }}</code></pre>
+          }
       }
     </article>
-  `
-})
-export class ContentRendererComponent implements AfterViewChecked {
-  private md = inject(MarkdownService);
-  private search = inject(SearchService);
-
-  blocks = this.md.blocks;
-  
-  filteredBlocks = computed(() =>
-    this.blocks().filter(b =>
-      !this.search.query() ||
-      b.content.toLowerCase().includes(this.search.query())
-    )
-  );
-
-  ngAfterViewChecked() {
-    // Aquí iría Prism.highlightAll() si implementas syntax highlighting
-  }
-}
-

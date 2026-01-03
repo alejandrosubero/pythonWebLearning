@@ -2,7 +2,7 @@
 import { Component } from '@angular/core';
 import { MarkdownService } from '../../src/app/core/services/markdown.service';
 import { SidebarComponent } from './layout/sidebar.component';
-import { ContentRendererComponent } from '../../src/app/features/content/content-renderer.component';
+import { ContentRendererComponent } from './features/content/content-renderer/content-renderer.component';
 import { BackToTopComponent } from "./core/back/back-to-top.component";
 import { NavbarComponent } from './layout/navbar.component';
 
