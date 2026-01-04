@@ -13,37 +13,107 @@ export class MarkdownService {
   /**
    * Procesa estilos internos como negritas **texto** y código inline `codigo`
    */
-  private parseInlineStyles(text: string): string {
-  return text
-    // Negritas: **texto**
-    .replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-blue-600 dark:text-blue-400">$1</strong>')
+//   private parseInlineStyles(text: string): string {
+//   return text
+//     // Negritas: **texto**
+//     .replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-blue-600 dark:text-blue-400">$1</strong>')
     
-    // Código inline: `texto` -> Cambiado a color rojo (text-red-600)
-    .replace(/`(.*?)`/g, '<code class="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded text-sm font-mono text-red-600 dark:text-red-400 border border-gray-200 dark:border-gray-700">$1</code>');
-}
+//     // Código inline: `texto` -> Cambiado a color rojo (text-red-600)
+//     .replace(/`(.*?)`/g, '<code class="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded text-sm font-mono text-red-600 dark:text-red-400 border border-gray-200 dark:border-gray-700">$1</code>');
+// }
+
+// private parseInlineStyles(text: string): string {
+//   if (!text) return '';
+
+//   return text
+//     // 1. Negritas
+//     .replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-blue-600 dark:text-blue-400">$1</strong>')
+    
+//     // 2. Código inline (Rojo)
+//     // Usamos [^`]+ para capturar todo el contenido entre los acentos graves de forma exacta
+//     .replace(/`([^`]+)`/g, '<code class="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded text-sm font-mono text-red-600 dark:text-red-400 border border-gray-200 dark:border-gray-700">$1</code>');
+// }
 
   /**
    * Transforma un array de líneas de tabla Markdown en un string de tabla HTML con Tailwind
    */
+  // private parseTable(rows: string[]): string {
+  //   // Filtramos la línea de separación típica de markdown |---|---|
+  //   const filteredRows = rows.filter(r => !r.match(/^\|?\s?[:-]+\s?\|/));
+    
+  //   let html = '<div class="overflow-x-auto my-6 shadow-sm rounded-lg border border-gray-200 dark:border-gray-700">';
+  //   html += '<table class="w-full text-sm text-left border-collapse">';
+    
+  //   filteredRows.forEach((row, index) => {
+  //     // Separar por pipes y limpiar espacios, ignorando los pipes vacíos de los extremos
+  //     const cells = row.split('|').filter((cell, i, arr) => {
+  //       if (i === 0 && cell.trim() === '') return false;
+  //       if (i === arr.length - 1 && cell.trim() === '') return false;
+  //       return true;
+  //     });
+
+  //     const isHeader = index === 0;
+  //     const tag = isHeader ? 'th' : 'td';
+  //     const rowClass = isHeader 
+  //       ? 'bg-gray-100 dark:bg-gray-700/50 text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-700' 
+  //       : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-b border-gray-100 dark:border-gray-800';
+
+  //     html += `<tr class="${rowClass}">`;
+  //     cells.forEach(cell => {
+  //       const content = this.parseInlineStyles(cell.trim());
+  //       html += `<${tag} class="p-3 border-r last:border-r-0 border-gray-200 dark:border-gray-700">${content}</${tag}>`;
+  //     });
+  //     html += '</tr>';
+  //   });
+
+  //   html += '</table></div>';
+  //   return html;
+  // }
+
+  /**
+   * Divide una línea de tabla por pipes (|), pero ignora los pipes que están 
+   * dentro de acentos graves (code spans).
+   */
+  private splitTableLine(line: string): string[] {
+    const cells: string[] = [];
+    let currentCell = '';
+    let inCode = false;
+
+    for (let i = 0; i < line.length; i++) {
+      const char = line[i];
+
+      if (char === '`') {
+        inCode = !inCode;
+        currentCell += char;
+      } else if (char === '|' && !inCode) {
+        cells.push(currentCell);
+        currentCell = '';
+      } else {
+        currentCell += char;
+      }
+    }
+    cells.push(currentCell);
+    return cells;
+  }
+
   private parseTable(rows: string[]): string {
-    // Filtramos la línea de separación típica de markdown |---|---|
     const filteredRows = rows.filter(r => !r.match(/^\|?\s?[:-]+\s?\|/));
     
     let html = '<div class="overflow-x-auto my-6 shadow-sm rounded-lg border border-gray-200 dark:border-gray-700">';
     html += '<table class="w-full text-sm text-left border-collapse">';
     
     filteredRows.forEach((row, index) => {
-      // Separar por pipes y limpiar espacios, ignorando los pipes vacíos de los extremos
-      const cells = row.split('|').filter((cell, i, arr) => {
-        if (i === 0 && cell.trim() === '') return false;
-        if (i === arr.length - 1 && cell.trim() === '') return false;
-        return true;
-      });
+      // Usamos nuestra nueva función de división inteligente
+      let cells = this.splitTableLine(row.trim());
+
+      // Limpieza de celdas vacías en los extremos causadas por los pipes laterales
+      if (cells[0].trim() === '') cells.shift();
+      if (cells.length > 0 && cells[cells.length - 1].trim() === '') cells.pop();
 
       const isHeader = index === 0;
       const tag = isHeader ? 'th' : 'td';
       const rowClass = isHeader 
-        ? 'bg-gray-100 dark:bg-gray-700/50 text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-700' 
+        ? 'bg-gray-100 dark:bg-gray-700/50 text-gray-900 dark:text-white font-bold' 
         : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-b border-gray-100 dark:border-gray-800';
 
       html += `<tr class="${rowClass}">`;
@@ -57,6 +127,15 @@ export class MarkdownService {
     html += '</table></div>';
     return html;
   }
+
+  private parseInlineStyles(text: string): string {
+    if (!text) return '';
+    return text
+      .replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-blue-600 dark:text-blue-400">$1</strong>')
+      // Regex mejorada para código inline (Rojo)
+      .replace(/`([^`]+)`/g, '<code class="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded text-sm font-mono text-red-600 dark:text-red-400 border border-gray-200 dark:border-gray-700">$1</code>');
+  }
+
 
   /**
    * Carga una lista de archivos Markdown, los combina y actualiza la señal

@@ -43,9 +43,12 @@ import { SearchService } from '../../../core/services/search.service';
             <pre class="overflow-x-auto bg-slate-900 dark:bg-slate-950 text-slate-100 p-4 rounded-lg text-sm"><code class="language-{{ b.language }}">{{ b.content }}</code></pre>
           }
 
-          @if (b.type === 'table') {
+          <!-- @if (b.type === 'table') {
             <div [innerHTML]="b.content"></div>
-          }
+          } -->
+            @if (b.type === 'table') {
+  <div [innerHTML]="b.content" class="my-4"></div>
+}
       }
     </article>
   `
