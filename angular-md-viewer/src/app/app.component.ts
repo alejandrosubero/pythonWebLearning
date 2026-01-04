@@ -36,7 +36,7 @@ import { NavbarComponent } from './layout/navbar.component';
 })
 export class AppComponent {
   constructor(private markdownService: MarkdownService) {
-    // markdownService.loadMarkdown('assets/datos.md');
+    // markdownService.loadMarkdown('assets/datos1.md');
     markdownService.loadMarkdownList();
   }
 }

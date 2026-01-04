@@ -53,22 +53,30 @@ import { SearchBarComponent } from '../features/search-bar.component';
     </aside>
   `
 })
+
 export class SidebarComponent {
-  // ✅ CORREGIDO: Removido 'private' para que sea público
   md = inject(MarkdownService);
   search = inject(SearchService);
   ui = inject(UiService);
+
+  // Función para eliminar etiquetas HTML (el inverso de lo que hicimos en el servicio)
+  private stripHtml(text: string): string {
+    return text.replace(/<[^>]*>/g, '');
+  }
 
   filteredHeadings = computed(() => {
     const query = this.search.query().toLowerCase().trim();
     const allHeadings = this.md.headings();
     
-    if (!query) {
-      return allHeadings;
-    }
-    
-    return allHeadings.filter(h => 
-      h.content.toLowerCase().includes(query)
-    );
+    // Primero filtramos según la búsqueda
+    const filtered = !query 
+      ? allHeadings 
+      : allHeadings.filter(h => h.content.toLowerCase().includes(query));
+
+    // Luego mapeamos para devolver el contenido sin HTML
+    return filtered.map(h => ({
+      ...h,
+      content: this.stripHtml(h.content) // Limpia las etiquetas <span> o <strong>
+    }));
   });
 }
