@@ -46,4 +46,4 @@ export class AppComponent {
 //python_Learning_web
 //ng build --configuration production --base-href="/tu-repositorio/"
 
- 
+ // error cuando | OR | `||` | `or` | `if x or y:` |
